@@ -1,0 +1,3 @@
+{:require  [cljs-d3-reagent.app]
+ :init-fns [cljs-d3-reagent.app/init]
+ :compiler-options {:asset-path "js/app.out"}}
