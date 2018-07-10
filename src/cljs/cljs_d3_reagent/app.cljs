@@ -3,11 +3,11 @@
             [d3-selection :as d3]
             [cljs-d3-reagent.viz :refer-macros [defviz]]))
 
-(defn join-data* [root {:keys [data] :as config}]
-  (let [$ (-> root d3/select
+(defviz v
+  [$ {:keys [data width height]}]
+  (let [$ (-> $ d3/select
               (.select "svg")
-              (.attr "width" (config :width))
-              (.attr "height" (config :height))
+              (.attr "width" width)
               (.selectAll "circle")
               (.data data))
         _ (-> $ .enter
@@ -16,13 +16,9 @@
               (.attr "r" 25)
               (.merge $)
               (.attr "cx" #(* % 30)))
-        _ (-> $ .exit .remove)]))
-
-(defviz v
-  join-data*
-  [state]
+        _ (-> $ .exit .remove)])
   [:div {:style {:text-align "center"}}
-   [:svg {:width (:width state)}]])
+   [:svg {:height height}]])
 
 (defn init []
   (r/render-component

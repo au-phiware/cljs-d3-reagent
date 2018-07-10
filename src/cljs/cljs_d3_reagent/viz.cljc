@@ -2,11 +2,11 @@
   (:require [reagent.core]))
 
 (defmacro defviz
-  ([name join-fn arglist & body]
+  ([name arglist join & body]
    `(defn ~name ~arglist
-      (letfn [(join# [$#] (apply ~join-fn (reagent.core/dom-node $#) ~arglist))]
+      (letfn [(join# [$#] (apply (fn ~arglist ~join) (reagent.core/dom-node $#) ~arglist))]
         (reagent.core/create-class
          {:display-name ~(str name)
-          :reagent-render (fn ~arglist ~@body)
+          :reagent-render (fn ~(-> arglist rest vec) ~@body)
           :component-did-mount join#
           :component-did-update join#})))))
